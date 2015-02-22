@@ -38,8 +38,14 @@ module.exports = (grunt) ->
         src: 'build/app.js'
         dest: 'public/js/app.js'
 
+    copy:
+      img:
+        expand: true
+        cwd: 'assets/img/'
+        src: ['*.jpg', '*.png']
+        dest: 'public/img/'
+
     watch:
-      
       js:
         files: 'assets/scripts/*.coffee'
         tasks: ['coffee', 'uglify:app']
@@ -66,12 +72,13 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   #grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
+  grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-express-server'
   #grunt.loadNpmTasks 'grunt-contrib-clean'
 
   grunt.registerTask 'default', ['build']
-  grunt.registerTask 'build', ['stylus', 'coffee', 'uglify']
+  grunt.registerTask 'build', ['copy', 'stylus', 'coffee', 'uglify']
   grunt.registerTask 'server:dev', ['express:dev', 'watch']
   
   
