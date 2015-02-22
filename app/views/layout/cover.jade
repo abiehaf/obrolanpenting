@@ -1,0 +1,27 @@
+- body_class = 'layout-cover'
+extends base
+
+block body
+  .container
+    .container-inner
+        .header
+          h3.brand.title 
+            img(src='/img/logo.png')
+            span Obrolan Penting
+          nav
+            ul.nav
+              li: a(href='#') Home
+              li: a(href='#') About Us
+
+        .content
+          block content
+
+        .footer
+          p
+            | &copy; 2015 Obrolan Penting |
+            a(href='http://facebook.com/obrolanpenting') Facebook
+            | |
+            a(href='https://twitter.com/obrolanpenting') Twitter
+            
+
+

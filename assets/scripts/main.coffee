@@ -1,22 +1,15 @@
 
 
-$(document).ready ->
-  ws = new WebSocket('ws://127.0.0.1:8080/websocket')
 
-  ws.onopen = (evt) ->
-    $('#messages').append('<li>WebSocket connection opened.</li>')
+jQuery ($) ->
+  backgrounds = ['kolaborasi.jpg', 'love_banten.jpg', 'teriak.jpg']
+  console.log backgrounds
+  iBg = 0
+  setInterval () ->
+    iBg = (iBg + 1) % backgrounds.length
+    console.log iBg
+    $('body').css 'background-image', 'url(/img/background/' + backgrounds[iBg] + ')'
 
-
-  ws.onmessage = (evt) ->
-    $('#messages').append('<li>' + evt.data + '</li>')
-
-
-  ws.onclose = (evt) ->
-    $('#messages').append('<li>WebSocket connection closed.</li>');
+  , 5000
 
 
-  $('#send').submit ->
-    ws.send($('input:first').val())
-    $('input:first').val('').focus()
-    $('#audio-welcome')[0].play()
-    return false

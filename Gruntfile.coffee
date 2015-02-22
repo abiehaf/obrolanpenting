@@ -42,20 +42,24 @@ module.exports = (grunt) ->
       img:
         expand: true
         cwd: 'assets/img/'
-        src: ['*.jpg', '*.png']
+        src: ['*.jpg', '*.png', '**']
         dest: 'public/img/'
 
     watch:
       js:
         files: 'assets/scripts/*.coffee'
         tasks: ['coffee', 'uglify:app']
-
       css:
         files: 'assets/stylesheets/*.styl'
         tasks: ['stylus']
         options: 
           debounceDelay: 250
-
+      express:
+        options:
+          livereload: true
+          spawn: false
+        files: ['app/controllers/**', 'app/models/**']
+        tasks: ['express:dev']
 
     express:
       dev: 
@@ -79,7 +83,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['copy', 'stylus', 'coffee', 'uglify']
-  grunt.registerTask 'server:dev', ['express:dev', 'watch']
+  grunt.registerTask 'server', ['build', 'express:dev', 'watch']
   
   
   
