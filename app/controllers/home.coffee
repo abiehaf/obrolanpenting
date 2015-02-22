@@ -6,8 +6,9 @@ module.exports = (app) ->
   app.use '/', router
 
 router.get '/', (req, res, next) ->
-
-  db.Article.findAll().success (articles) ->
-    res.render 'index',
-      title: 'Generator-Express MVC'
-      articles: articles
+  res.render 'index',
+    title: 'Generator-Express MVC'
+  #db.Article.findAll().success (articles) ->
+  #  res.render 'index',
+  #    title: 'Generator-Express MVC'
+  #    articles: articles
