@@ -1,11 +1,12 @@
 extends ../layout/cover
 
 block content
-  h1.cover-heading Menurut kamu, Banten itu ...
-  p.lead
-    textarea.testimoni.form-control(row=3)
-  p.lead
-    a.btn.btn-lg.btn-submit.btn-default(href='#', data-toggle='modal', data-target='#submit-dialog') Teriakkan!
+  form#testimoni-form(action='/testimoni/step-1',method='post')
+    h1.cover-heading Menurut kamu, Banten itu ...
+    p.lead
+      textarea.testimoni.form-control(row=3,name='testimoni')
+    p.lead
+      a.btn.btn-lg.btn-submit.btn-default(href='#', data-toggle='modal', data-target='#submit-dialog') Teriakkan!
 
 append body
   #submit-dialog.modal.fade(tabindex='-1', role='dialog', aria-labelledby='User Info', aria-hidden='true')

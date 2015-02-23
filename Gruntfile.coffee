@@ -70,6 +70,12 @@ module.exports = (grunt) ->
           script: 'server.js',
           node_env: 'production'
 
+    casperjs:
+      options:
+        casperjsOptions: '--xunit=test.log.xml'
+      files: ['test/']
+
+
 
   grunt.loadNpmTasks 'grunt-contrib-stylus'
   #grunt.loadNpmTasks 'grunt-contrib-cssmin'
@@ -79,11 +85,13 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-express-server'
+  grunt.loadNpmTasks 'grunt-casperjs'
   #grunt.loadNpmTasks 'grunt-contrib-clean'
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['copy', 'stylus', 'coffee', 'uglify']
   grunt.registerTask 'server', ['build', 'express:dev', 'watch']
+  grunt.registerTask 'test', ['build', 'express:dev', 'casperjs']
   
   
   
