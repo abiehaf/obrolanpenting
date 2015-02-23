@@ -23,9 +23,26 @@ module.exports = (app, config) ->
   app.use express.static config.root + '/public'
   app.use methodOverride()
 
+  routerMap = {}
+  app.use (req, res, next) ->
+    app.locals.req = req
+    app.locals.link = (name, params) ->
+      return routerMap[name]
+    next()
+
+  router = express.Router()
+  app.use '/', router
+  route = (name, url, handler) ->
+    routerMap[name] = url
+    router.all url, (req, res, next) ->
+      req.router_name = name
+      handler req, res, next
+
   controllers = glob.sync config.root + '/app/controllers/**/*.coffee'
   controllers.forEach (controller) ->
-    require(controller)(app);
+    require(controller)(route)
+
+
 
   # catch 404 and forward to error handler
   app.use (req, res, next) ->
