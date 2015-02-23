@@ -4,8 +4,8 @@ html(lang='en')
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    meta(name='description', content='')
-    meta(name='author', content='')
+    meta(name='description', content='Obrolan Penting: Sepenting apa obrolanmu?')
+    meta(name='author', content='Abi Hafshin Alfarouq (http://hafs.in) <abi@hafs.in>')
     link(rel='icon', href='/img/favicon.png')
     title= title ||  'Obrolan Penting'
     
@@ -18,7 +18,7 @@ html(lang='en')
       //if lt IE 9
         script(src='https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js')
         script(src='https://oss.maxcdn.com/respond/1.4.2/respond.min.js')
-  body(class=body_class).layout-cover
+  body(class=body_class,id='page-'+req.router_name.replace('.','-'))
     block body
     block js
       script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js')

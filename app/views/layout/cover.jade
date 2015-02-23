@@ -1,27 +1,39 @@
-- body_class = 'layout-cover'
 extends base
+
+- navMenus = [{name: 'home.index', 'label': 'Home'},{name: 'home.about', 'label': 'Tentang Kami'}]
+
 
 block body
   .container
     .container-inner
         .header
-          h3.brand.title 
-            img(src='/img/logo.png')
-            span Obrolan Penting
-          nav
-            ul.nav
-              li: a(href='#') Home
-              li: a(href='#') About Us
+          .padding-10
+            h3.brand.title
+              img(src='/img/logo.png')
+              span Obrolan Penting
+            nav
+              ul.nav
+                each nav in navMenus
+                  //if nav.name == req.router_name
+                  //  li.active: a(href=link(nav.name))= nav.label
+                  //else
+                  //  li: a(href=link(nav.name))= nav.label
+                  li(class=(nav.name == req.router_name ? 'active' : ''))
+                    a(href=link(nav.name))= nav.label
+
 
         .content
-          block content
+          .padding-10.inner
+            block content
 
         .footer
-          p
+          p.padding-10
             | &copy; 2015 Obrolan Penting |
             a(href='http://facebook.com/obrolanpenting') Facebook
             | |
             a(href='https://twitter.com/obrolanpenting') Twitter
+            | |
+            a(href='https://github.com/abiehaf/obrolanpenting/wiki/Berkontribusi') Developer?
             
 
 
