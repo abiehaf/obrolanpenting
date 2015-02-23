@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "grunt test",
-    "postinstall": "grunt build"
+    "postinstall": "npm install grunt; ./node_modules/.bin/grunt build"
   },
   "repository": {
     "type": "git",
