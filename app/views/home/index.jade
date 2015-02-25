@@ -1,7 +1,7 @@
 extends ../layout/cover
 
 block content
-  form#testimoni-form(action=link('testimony.post'),method='post')
+  form#testimony-form(action=link('testimony.post'),method='post')
     h1.cover-heading Menurut kamu, Banten itu ...
     p.lead
       textarea#testimony-field.testimony.form-control(row=3, name='testimony')

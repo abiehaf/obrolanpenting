@@ -17,7 +17,7 @@ getTwitterPhoto = (id, cb) ->
 
 module.exports = (route, app) ->
 
-  route 'testimony.post', '/testiomny/post', (req, res, next) ->
+  route 'testimony.post', '/testimony/post', (req, res, next) ->
     save = (params) ->
       db.Testimony.create params
       .catch (error) ->
