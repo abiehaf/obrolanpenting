@@ -24,28 +24,37 @@ module.exports = (app, config) ->
   app.use methodOverride()
 
   routerMap = {}
-  app.use (req, res, next) ->
-    app.locals.req = req
-    app.locals.link = (name, params) ->
-      return routerMap[name]
-    next()
-
   router = express.Router()
-  app.use '/', router
-  route = (name, url, handler) ->
+  _route = (method, name, url, handler) ->
     routerMap[name] = url
-    router.all url, (req, res, next) ->
+    router[method] url, (req, res, next) ->
       req.router_name = name
       handler req, res, next
+  route = (name, url, handler) -> _route('all', name, url, handler)
+  route.get = (name, url, handler) -> _route('get', name, url, handler)
+  route.post = (name, url, handler) -> _route('post', name, url, handler)
+  route.createLink = (name, params) ->
+    url = routerMap[name]
+    if url and params
+      for k, v of params
+        url = url.replace(':' + k, v)
+    return url
 
+  app.locals.DEBUG = app.get('env') == 'development'
+  app.locals.link = route.createLink
+
+  app.use (req, res, next) ->
+    app.locals.req = req
+    next()
+
+  app.use '/', router
   controllers = glob.sync config.root + '/app/controllers/**/*.coffee'
   controllers.forEach (controller) ->
-    require(controller)(route)
-
-
+    require(controller)(route, app)
 
   # catch 404 and forward to error handler
   app.use (req, res, next) ->
+    req.router_name = 'site.error'
     err = new Error 'Not Found'
     err.status = 404
     next err

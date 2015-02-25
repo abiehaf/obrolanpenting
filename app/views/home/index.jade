@@ -1,35 +1,38 @@
 extends ../layout/cover
 
 block content
-  form#testimoni-form(action='/testimoni/step-1',method='post')
+  form#testimoni-form(action=link('testimony.post'),method='post')
     h1.cover-heading Menurut kamu, Banten itu ...
     p.lead
-      textarea.testimoni.form-control(row=3,name='testimoni')
+      textarea#testimony-field.testimony.form-control(row=3, name='testimony')
     p.lead
       a.btn.btn-lg.btn-submit.btn-default(href='#', data-toggle='modal', data-target='#submit-dialog') Teriakkan!
 
 append body
   #submit-dialog.modal.fade(tabindex='-1', role='dialog', aria-labelledby='User Info', aria-hidden='true')
     .modal-dialog
-      form.form-horizontal.modal-content
+      form.form.modal-content(action=link('testimony.post'),method='post')
         .modal-header
           button.close(type='button', data-dismiss='modal', aria-label='Close')
             span(aria-hidden='true') ×
           h4.modal-title kami ingin kenal kamu lebih jauh
         .modal-body
           p Beritahu kami tentang siapa kamu
-          .form-group
-            label.control-label.col-sm-2 Nama
-            .col-sm-10
-              input.form-control(type='text', name='name', required)
-          .form-group
-            label.control-label.col-sm-2 Email
-            .col-sm-10
-              input.form-control(type='text', name='email', required)
-          .form-group
-            label.control-label.col-sm-2 Twitter
-            .col-sm-10
-              input.form-control(type='text', name='email', required)
+          .row
+            .col-sm-8
+              .form-group
+                input.form-control(type='text', name='name', placeholder='Nama Lengkap', required)
+              .form-group
+                input.form-control(type='text', name='email', required, placeholder='Email (nama@host.com)')
+              .form-group
+                .input-group
+                  .input-group-addon @
+                  input#twitter-field.form-control(type='text', name='twitter', required, placeholder='twitter_id')
+            .col-sm-4.hidden-xs
+              .picture
+                img#twitter-photo(src='/img/dummy-person.jpg')
+          input#testimony-hidden-field(type='hidden', name='text')
+          input#photo-hidden-field(type='hidden', name='photo')
         .modal-footer
           button.btn.btn-default(type='button', data-dismiss='modal') Batal
           button.btn.btn-primary(type='submit') Brangkat!

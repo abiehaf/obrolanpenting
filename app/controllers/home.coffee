@@ -1,4 +1,3 @@
-db = require '../models'
 
 navMenus = [{name: 'home.index', 'label': 'Home'}, {name: 'home.about', 'label': 'Tentang Kami'}]
 

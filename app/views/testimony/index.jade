@@ -1,0 +1,11 @@
+//
+   Created by abie on 2/24/15.
+
+extend ../layout/default
+
+block content
+   | Hi #{link('testimony.view',{name:'abi-hafshin',id:123})}
+   a(href=link('testimony.view',{name:'abi-hafshin',id:123})) Lala
+
+   each t in testimonies
+       a(href=link('testimony.view',{name:t.simplifiedName,id:t.id}))= t.name
