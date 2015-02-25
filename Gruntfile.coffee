@@ -1,8 +1,6 @@
 fs = require 'fs'
 
 DEBUG = true
-ZEPTO_MODULES = ['zepto', 'event', 'ajax', 'form', 'fx', 'fx_methods', 'selector', 'touch']
-
 
 module.exports = (grunt) ->
   grunt.initConfig
@@ -13,7 +11,7 @@ module.exports = (grunt) ->
         options: 
           paths: ['bower_components/bootstrap-stylus']
           urlfunc: 'embedurl' # use embedurl('test.png') in our code to trigger Data URI embedding
-          sourcemap: DEBUG
+          # sourcemap: DEBUG
         files: 
           'public/css/style.css': 'assets/stylesheets/style.styl' # 1:1 compile
 
@@ -44,6 +42,12 @@ module.exports = (grunt) ->
         cwd: 'assets/img/'
         src: ['*.jpg', '*.png', '**']
         dest: 'public/img/'
+
+      dist:
+        expand: true
+        cwd: 'assets/dist/'
+        src: ['**']
+        dest: 'public/dist/'
 
     watch:
       js:
