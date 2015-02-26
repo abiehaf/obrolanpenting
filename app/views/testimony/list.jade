@@ -1,0 +1,15 @@
+//
+   Created by abie on 2/26/15.
+
+ul#testimonies
+  each t in testimonies
+    li.testimony
+      a(href=link('testimony.view', {name: t.simplifiedName, id: t.id})).photo
+        if t.photo
+          img(src=t.photo)
+        else
+          img(src='/img/dummy-person.jpg')
+      .body
+        a(href=link('testimony.view', {name: t.simplifiedName, id: t.id}))
+          .name= t.name
+          .content= t.text

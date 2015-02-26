@@ -8,18 +8,18 @@ block body
     .container-inner
         .header
           .padding-10
-            h3.brand.title
+            h1.brand.title: a(href='/')
               img(src='/img/logo.png')
               span Obrolan Penting
             nav
               ul.nav
-                each nav in navMenus
+                each label,name in {'testimony.index': 'Banten Itu...', 'home.about': 'Tentang Kami'}
                   //if nav.name == req.router_name
                   //  li.active: a(href=link(nav.name))= nav.label
                   //else
                   //  li: a(href=link(nav.name))= nav.label
-                  li(class=(nav.name == req.router_name ? 'active' : ''))
-                    a(href=link(nav.name))= nav.label
+                  li(class=(name == req.router_name ? 'active' : ''))
+                    a(href=link(name))= label
 
 
         .content

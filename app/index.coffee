@@ -45,6 +45,16 @@ module.exports = (app, config) ->
 
   app.use (req, res, next) ->
     app.locals.req = req
+    res.error = (err) ->
+      res.status err.status || 500
+      if req.xhr
+        # console.trace err
+        res.send err.message
+      else
+        res.render 'error',
+          title: 'Error ' + (err.status || 500)
+          error: if app.get('env') == 'development' then err else {}
+          message: err.message
     next()
 
   app.use '/', router
@@ -57,7 +67,8 @@ module.exports = (app, config) ->
     req.router_name = 'site.error'
     err = new Error 'Not Found'
     err.status = 404
-    next err
+    res.error err
+    #next err
 
   # error handlers
 

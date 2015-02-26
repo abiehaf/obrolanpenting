@@ -6,10 +6,11 @@ navMenus = [{name: 'home.index', 'label': 'Home'}, {name: 'home.about', 'label':
 
 getTwitterPhoto = (id, cb) ->
   request 'https://twitter.com/' + id, (err, res, body) ->
+    console.log err, res.statusCode, body
     if err
       cb err
-    else if res.statusCode is not 200
-      cb new Error('Http code: ' + res.statusCode)
+    else if res.statusCode != 200
+      cb(new Error('Http code: ' + res.statusCode))
     else
       $ = cheerio.load body
       cb null, $('.ProfileAvatar img').attr('src')
@@ -17,18 +18,17 @@ getTwitterPhoto = (id, cb) ->
 
 module.exports = (route, app) ->
 
-  route 'testimony.post', '/testimony/post', (req, res, next) ->
+  route 'testimony.post', '/testimony/post', (req, res) ->
     save = (params) ->
       db.Testimony.create params
-      .catch (error) ->
-        console.trace error
-        next error
+      .catch (err) ->
+        res.error err
       .then (testimony) -> res.redirect route.createLink('testimony.view', {name: 'abi-hafshin', id: testimony.id})
     params = req.body
     if params.twitter
       params.url = 'https://twitter.com/' + params.twitter
     if params.twitter and ! params.photo
-      getTwitterPhoto params.twitter, (photo) ->
+      getTwitterPhoto params.twitter, (err, photo) ->
         params.photo = photo
         save params
     else
@@ -37,20 +37,37 @@ module.exports = (route, app) ->
 
   route 'testimony.twitter.photo', '/testimony/twitter-photo/:id', (req, res) ->
     getTwitterPhoto req.params.id, (err, photo) ->
+      console.log err, photo
       if err
-        console.trace err
-        next err
+        res.error err
       else
         res.send photo
 
 
-  route 'testimony.index', '/banten-menurut-mereka', (req, res, next) ->
+  route 'testimony.index', '/banten-menurut-mereka', (req, res) ->
     db.Testimony.findAll().success (testimonies) ->
       res.render 'testimony/index',
-        title: 'Generator-Express MVC'
+        title: 'Banten Menurut Mereka - Obrolan Penting'
         testimonies: testimonies
 
-  route 'testimony.view', '/banten-menurut-:name--:id', (req, res, next) ->
-    console.log req.params
-    res.render 'testimony/view'
+  route 'testimony.view', '/banten-menurut-:name--:id', (req, res) ->
+    param = {}
+    done = ->
+      res.render 'testimony/view',
+        title: "Banten Menurut #{param.testimony.name} - Obrolan Penting"
+        testimony: param.testimony
+        testimonies: param.testimonies
 
+    db.Testimony.find(req.params.id).success (testimony) ->
+      param.testimony = testimony
+      if param.testimonies
+        done()
+
+    condition = {
+      where:
+        id: {ne: req.params.id}
+    }
+    db.Testimony.findAll(condition).success (testimonies) ->
+      param.testimonies = testimonies
+      if param.testimony
+        done()

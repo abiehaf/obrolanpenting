@@ -1,0 +1,19 @@
+//
+   Created by abie on 2/26/15.
+
+extend ../layout/default
+block content
+
+  #testimony
+    .photo
+      if testimony.photo
+        img(src=testimony.photo)
+      else
+        img(src='/img/dummy-person.jpg')
+    .body
+      a(href=testimony.url).name= testimony.name
+      .content= testimony.text
+  h4 Banten Menurut Mereka.
+
+
+  include list.jade

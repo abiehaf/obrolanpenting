@@ -1,8 +1,40 @@
 extends base
 
+mixin menuitem(name, arg)
+  li(class=(name==req.router_name ? 'active':''))
+    a(href=link(name,arg))
+      block
+
 block body
-  .container
-      block header
-      block content
-        | hi
-      block footer
+  block header
+    header#header
+      nav.navbar.navbar-default.navbar-fixed-top.navbar-inverse
+        .container
+          .navbar-header
+            button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+              span.sr-only Toggle navigation
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+            a.navbar-brand(href='/')
+              img(src='/img/logo.png')
+              | Obrolan Penting
+          #bs-example-navbar-collapse-1.collapse.navbar-collapse
+            ul.nav.navbar-nav
+              +menuitem('testimony.index') Banten Itu
+            ul.nav.navbar-nav.navbar-right
+              +menuitem('home.about') Tentang Kami
+              li
+                a(href='https://www.facebook.com/obrolanpenting')
+                  i.fa.fa-facebook-square
+              li
+                a(href='https://twitter.com/obrolanpenting')
+                  i.fa.fa-twitter-square
+
+  section#content.container
+    block content
+  footer#footer.container
+    block footer
+      p
+        | Copyright &copy; 2015 Tim Obrolan Penting.
+        a(href='https://github.com/abiehaf/obrolanpenting/wiki/Berkontribusi') Developer?
