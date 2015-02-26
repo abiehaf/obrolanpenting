@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) ->
   ,
     getterMethods:
       simplifiedName: ->
-        this.name.toLowerCase().replace(/\W+/g, '-') .trim('-') #.replace(/-+/, '-')
+        this.name.toLowerCase().replace(/\W+/g, '-').replace(/^-+|-+$/g, '')
 # ,
 #   classMethods:
 #     associate (models) ->
