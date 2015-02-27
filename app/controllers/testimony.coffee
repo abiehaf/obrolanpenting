@@ -21,9 +21,14 @@ module.exports = (route, app) ->
   route 'testimony.post', '/testimony/post', (req, res) ->
     save = (params) ->
       db.Testimony.create params
+      .then (testimony) ->
+        res.send
+          link: route.createLink('testimony.view', {name: 'abi-hafshin', id: testimony.id})
       .catch (err) ->
-        res.error err
-      .then (testimony) -> res.redirect route.createLink('testimony.view', {name: 'abi-hafshin', id: testimony.id})
+        if err.name is 'SequelizeValidationError'
+          res.json errors: err.errors
+        else
+          res.error err
     params = req.body
     if params.twitter
       params.url = 'https://twitter.com/' + params.twitter

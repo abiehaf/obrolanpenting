@@ -1,16 +1,47 @@
 
-module.exports = (sequelize, DataTypes) ->
+module.exports = (db, DataTypes) ->
 
-  Testimony = sequelize.define 'Testimony',
-    name: DataTypes.STRING,
-    email: DataTypes.STRING
-    text: DataTypes.TEXT,
-    url: DataTypes.STRING,
-    photo: DataTypes.STRING,
-  ,
-    getterMethods:
+  Testimony = db.define 'Testimony',
+    name:
+      type: DataTypes.STRING(50)
+      allowNull: false
+      validate:
+        len:
+          args: [3, 50]
+          msg: 'Nama terlalu pendek'
+
+    title:
+      type: DataTypes.STRING(50)
+
+    email:
+      type: DataTypes.STRING(100)
+      allowNull: false
+      validate:
+        isEmail:
+          msg: 'Format Salah'
+
+    text:
+      type: DataTypes.TEXT,
+      allowNull:
+        args: false
+        msg: 'Testimoni tidak boleh kosong'
+
+    url:
+      type: DataTypes.STRING,
+      validate:
+        isUrl: true
+
+    photo:
+      type: DataTypes.STRING,
+      validate:
+        isUrl: true
+      get: ->
+        return @getDataValue('photo') || '/img/dummy-person.jpg'
+
+  , getterMethods:
       simplifiedName: ->
-        this.name.toLowerCase().replace(/\W+/g, '-').replace(/^-+|-+$/g, '')
+        name = @getDataValue('name') || ''
+        return name.toLowerCase().replace(/\W+/g, '-').replace(/^-+|-+$/g, '')
 # ,
 #   classMethods:
 #     associate (models) ->

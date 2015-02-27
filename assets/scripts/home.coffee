@@ -13,8 +13,14 @@ $('#page-home-index').on 'page-load', ->
 
   , 5000
 
-  $('#submit-dialog').on 'show.bs.modal', ->
-    $('#testimony-hidden-field').val $('#testimony-field').val()
+  $('#btn-teriak').click (evt) ->
+    testimony =  $('#testimony-field').val().trim()
+    if testimony is ''
+      $('#testimony-field').focus()
+    else
+      $('#testimony-hidden-field').val(testimony)
+      $('#submit-dialog').modal()
+    evt.preventDefault()
 
   currentTwitterId = null
   setPhotoTimeout = null

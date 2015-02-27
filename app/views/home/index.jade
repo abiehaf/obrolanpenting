@@ -6,12 +6,12 @@ block content
     p.lead
       textarea#testimony-field.testimony.form-control(row=3, name='testimony')
     p.lead
-      a.btn.btn-lg.btn-submit.btn-default(href='#', data-toggle='modal', data-target='#submit-dialog') Teriakkan!
+      button#btn-teriak.btn.btn-lg.btn-submit.btn-default(href='#') Teriakkan!
 
 append body
   #submit-dialog.modal.fade(tabindex='-1', role='dialog', aria-labelledby='User Info', aria-hidden='true')
     .modal-dialog
-      form.form.modal-content(action=link('testimony.post'),method='post')
+      form.form.modal-content.ajax-form(action=link('testimony.post'),method='post')
         .modal-header
           button.close(type='button', data-dismiss='modal', aria-label='Close')
             span(aria-hidden='true') ×
@@ -23,17 +23,18 @@ append body
               .form-group
                 input.form-control(type='text', name='name', placeholder='Nama Lengkap', required)
               .form-group
-                input.form-control(type='text', name='email', required, placeholder='Email (nama@host.com)')
+                input.form-control(type='email', name='email', required, placeholder='Email (nama@host.com)')
               .form-group
                 .input-group
                   .input-group-addon @
-                  input#twitter-field.form-control(type='text', name='twitter', required, placeholder='twitter_id')
+                  input#twitter-field.form-control(type='text', name='twitter', placeholder='twitter_id')
             .col-sm-4.hidden-xs
               .picture
                 img#twitter-photo(src='/img/dummy-person.jpg')
           input#testimony-hidden-field(type='hidden', name='text')
           input#photo-hidden-field(type='hidden', name='photo')
         .modal-footer
+          i.fa.fa-spinner.fa-spin.loader(style='display:none')
           button.btn.btn-default(type='button', data-dismiss='modal') Batal
           button.btn.btn-primary(type='submit') Brangkat!
 
