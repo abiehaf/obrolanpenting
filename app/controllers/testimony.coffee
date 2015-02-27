@@ -1,6 +1,7 @@
 db = require '../models'
 request = require 'request'
 cheerio = require 'cheerio'
+Q = require 'q'
 
 navMenus = [{name: 'home.index', 'label': 'Home'}, {name: 'home.about', 'label': 'Tentang Kami'}]
 
@@ -56,23 +57,12 @@ module.exports = (route, app) ->
         testimonies: testimonies
 
   route 'testimony.view', '/banten-menurut-:name--:id', (req, res) ->
-    param = {}
-    done = ->
+    Q.all [
+      db.Testimony.find(req.params.id)
+      db.Testimony.findAll({where: {id: {ne: req.params.id}}})
+    ]
+    .spread (testimony, testimonies) ->
       res.render 'testimony/view',
-        title: "Banten Menurut #{param.testimony.name} - Obrolan Penting"
-        testimony: param.testimony
-        testimonies: param.testimonies
-
-    db.Testimony.find(req.params.id).success (testimony) ->
-      param.testimony = testimony
-      if param.testimonies
-        done()
-
-    condition = {
-      where:
-        id: {ne: req.params.id}
-    }
-    db.Testimony.findAll(condition).success (testimonies) ->
-      param.testimonies = testimonies
-      if param.testimony
-        done()
+        title: "Banten Menurut #{testimony.name} - Obrolan Penting"
+        testimony: testimony
+        testimonies: testimonies
