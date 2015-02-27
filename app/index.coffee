@@ -8,6 +8,10 @@ bodyParser = require 'body-parser'
 compress = require 'compression'
 methodOverride = require 'method-override'
 
+routing = () ->
+
+
+
 module.exports = (app, config) ->
   app.set 'views', __dirname + '/views'
   app.set 'view engine', 'jade'
@@ -15,9 +19,7 @@ module.exports = (app, config) ->
   #app.use(favicon(config.root + '/public/img/favicon.ico'));
   app.use logger 'dev'
   app.use bodyParser.json()
-  app.use bodyParser.urlencoded(
-    extended: true
-  )
+  app.use bodyParser.urlencoded(extended: true)
   app.use cookieParser()
   app.use compress()
   app.use express.static config.root + '/public'
@@ -44,7 +46,7 @@ module.exports = (app, config) ->
   app.locals.link = route.createLink
 
   app.use (req, res, next) ->
-    app.locals.req = req
+    res.locals.req = req
     res.error = (err) ->
       res.status err.status || 500
       if req.xhr
@@ -57,10 +59,10 @@ module.exports = (app, config) ->
           message: err.message
     next()
 
-  app.use '/', router
   controllers = glob.sync config.root + '/app/controllers/**/*.coffee'
   controllers.forEach (controller) ->
     require(controller)(route, app)
+  app.use '/', router
 
   # catch 404 and forward to error handler
   app.use (req, res, next) ->
@@ -75,19 +77,19 @@ module.exports = (app, config) ->
   # development error handler
   # will print stacktrace
   
-  if app.get('env') == 'development'
-    app.use (err, req, res, next) ->
-      res.status err.status || 500
-      res.render 'error',
-        message: err.message
-        error: err
-        title: 'error'
-
-  # production error handler
-  # no stacktraces leaked to user
-  app.use (err, req, res, next) ->
-    res.status err.status || 500
-    res.render 'error',
-      message: err.message
-      error: {}
-      title: 'error'
+#  if app.get('env') == 'development'
+#    app.use (err, req, res, next) ->
+#      res.status err.status || 500
+#      res.render 'error',
+#        message: err.message
+#        error: err
+#        title: 'error'
+#
+#  # production error handler
+#  # no stacktraces leaked to user
+#  app.use (err, req, res, next) ->
+#    res.status err.status || 500
+#    res.render 'error',
+#      message: err.message
+#      error: {}
+#      title: 'error'
