@@ -74,9 +74,8 @@
     
     &:focus
       opacity 1
-      height 100px
-      border 1px solid #d0ac00
-      box-shadow 0 0 7px #d0ac00
+      border 1px solid #ffc400
+      box-shadow 0 0 10px #ffc400
 
   .nav
     & > li
@@ -144,9 +143,13 @@
     font-size 15pt
 
 #page-home-index
-  #submit-dialog .picture
-    position relative
-    overflow hidden
-    img
-      display block
-      width 100%
+  #submit-dialog
+    .picture
+      position relative
+      overflow hidden
+      border-radius  50%
+      img
+        display block
+        width 100%
+    .loader
+      margin 5px
