@@ -1,4 +1,7 @@
 # Obrolan Penting WebSite
-[![Build Status](https://travis-ci.org/abiehaf/obrolanpenting.svg?branch=master)](https://travis-ci.org/abiehaf/obrolanpenting)
+[![License][license-image]][license-url]
+[![Version][version-image]][version-url]
+[![Build Status][build-image]][build-url]
+[![Dependency Status][dependencies-image]][dependencies-url]
 
 Ini adalah source code dari http://www.obrolanpenting.org/
