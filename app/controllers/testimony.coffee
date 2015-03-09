@@ -2,6 +2,7 @@ db = require '../models'
 request = require 'request'
 cheerio = require 'cheerio'
 Q = require 'q'
+extend = require 'extend'
 
 navMenus = [{name: 'home.index', 'label': 'Home'}, {name: 'home.about', 'label': 'Tentang Kami'}]
 
@@ -49,19 +50,29 @@ module.exports = (route, app) ->
       else
         res.send photo
 
+  defaultFindArg = {
+    where:
+      shown: true
+    order: 'point DESC, "createdAt" DESC'
+    limit: 18
+  }
 
   route 'testimony.index', '/banten-menurut-mereka', (req, res) ->
-    db.Testimony.findAll().success (testimonies) ->
+    db.Testimony.findAll(defaultFindArg).success (testimonies) ->
       res.render 'testimony/index',
         title: 'Banten Menurut Mereka - Obrolan Penting'
         testimonies: testimonies
 
   route 'testimony.view', '/banten-menurut-:name--:id', (req, res) ->
+    param = extend(true, {}, defaultFindArg, {where: {id: {ne: req.params.id}}})
     Q.all [
       db.Testimony.find(req.params.id)
-      db.Testimony.findAll({where: {id: {ne: req.params.id}}})
+      db.Testimony.findAll(param)
     ]
     .spread (testimony, testimonies) ->
+      if testimony.shown
+        testimony.point++
+        testimony.save()
       res.render 'testimony/view',
         title: "Banten Menurut #{testimony.name} - Obrolan Penting"
         testimony: testimony

@@ -40,7 +40,7 @@ module.exports = (grunt) ->
       img:
         expand: true
         cwd: 'assets/img/'
-        src: ['*.jpg', '*.png', '**']
+        src: ['*.jpg', '*.png']
         dest: 'public/img/'
 
       dist:

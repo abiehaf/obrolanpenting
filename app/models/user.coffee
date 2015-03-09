@@ -1,7 +1,8 @@
+bcrypt = require 'bcrypt'
 
-module.exports = (db, DataTypes) ->
+module.exports = (sequelize, DataTypes) ->
 
-  Testimony = db.define 'Testimony',
+  User = sequelize.define 'User',
     name:
       type: DataTypes.STRING(50)
       allowNull: false
@@ -10,9 +11,6 @@ module.exports = (db, DataTypes) ->
           args: [3, 50]
           msg: 'Nama terlalu pendek'
 
-    title:
-      type: DataTypes.STRING(50)
-
     email:
       type: DataTypes.STRING(100)
       allowNull: false
@@ -20,11 +18,22 @@ module.exports = (db, DataTypes) ->
         isEmail:
           msg: 'Format Salah'
 
-    text:
-      type: DataTypes.TEXT,
+    password:
+      type: DataTypes.VIRTUAL
+      set: (val) ->
+        salt = bcrypt.genSaltSync(10)
+        @setDataValue 'password', val
+        @setDataValue 'password_hash', bcrypt.hash(val, salt)
       allowNull:
         args: false
         msg: 'Testimoni tidak boleh kosong'
+      validate:
+        len:
+          args: [4, 50]
+          msg: 'Password terlalu pendek'
+
+    password_hash:
+      type: DataTypes.STRING(100)
 
     url:
       type: DataTypes.STRING,
@@ -38,19 +47,15 @@ module.exports = (db, DataTypes) ->
       get: ->
         return @getDataValue('photo') || '/img/dummy-person.jpg'
 
-    shown:
-      type: DataTypes.BOOLEAN,
+    role:
+      type: DataTypes.STRING(10)
       default: false
 
-    point:
-      type: DataTypes.INTEGER
-      default: 0
 
 
-  , getterMethods:
-      simplifiedName: ->
-        name = @getDataValue('name') || ''
-        return name.toLowerCase().replace(/\W+/g, '-').replace(/^-+|-+$/g, '')
+  , instanceMethod:
+      passwordIsValid: (password, cb) ->
+        bcrypt.compare(@getDataValue('password_hash'), password, cb)
 # ,
 #   classMethods:
 #     associate (models) ->

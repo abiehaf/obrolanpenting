@@ -8,10 +8,6 @@ bodyParser = require 'body-parser'
 compress = require 'compression'
 methodOverride = require 'method-override'
 
-routing = () ->
-
-
-
 module.exports = (app, config) ->
   app.set 'views', __dirname + '/views'
   app.set 'view engine', 'jade'
